@@ -1,12 +1,23 @@
 import React, { useState } from "react";
 import ShoppingList from "./ShoppingList";
 import itemData from "../data/items";
+import ItemForm from "./ItemForm";
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [items, setItems] = useState(itemData);
+  const [searchText, setSearchText] = useState("");
 
   function onDarkModeClick() {
-    setIsDarkMode((isDarkMode) => !isDarkMode);
+    setIsDarkMode((prevMode) => !prevMode);
+  }
+
+  function handleSearchChange(search) {
+    setSearchText(search);
+  }
+
+  function handleItemFormSubmit(newItem) {
+    setItems((prevItems) => [...prevItems, newItem]);
   }
 
   return (
@@ -17,7 +28,12 @@ function App() {
           {isDarkMode ? "Dark" : "Light"} Mode
         </button>
       </header>
-      <ShoppingList items={itemData} />
+      <ItemForm onItemFormSubmit={handleItemFormSubmit} />
+      <ShoppingList 
+        items={items} 
+        searchText={searchText} 
+        onSearchChange={handleSearchChange} 
+      />
     </div>
   );
 }
